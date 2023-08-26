@@ -12,6 +12,7 @@
     "wrangler": "^3.0.0"
   },
   "dependencies": {
+    "cdate": "^0.0.7",
     "slack-cloudflare-workers": "^0.5.2"
   }
 }
