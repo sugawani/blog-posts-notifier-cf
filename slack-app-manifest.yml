@@ -1,0 +1,17 @@
+display_information:
+  name: 先月のブログ投稿通知ボット
+  description: 先月のブログ投稿を通知します
+  background_color: "#000000"
+features:
+  bot_user:
+    display_name: notify-blog-posts # ここ日本語使いたいけど使えない
+    always_online: true
+oauth_config:
+  scopes:
+    bot:
+      - chat:write
+      - chat:write.public
+settings:
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
