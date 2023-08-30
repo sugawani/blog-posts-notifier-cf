@@ -43,22 +43,18 @@ const reduceUserArticles = (articles: Article[]): UserArticles[] => {
 }
 
 function makeMessage(userArticles: UserArticles[]): string {
-    let message = "";
-    userArticles.forEach((userArticle, i) => {
-        let m = `${userArticle.userName} さんの先月のZennブログ投稿です\n`;
-        userArticle.articles.forEach((article) => {
-            m += `・ ${article.title} | https://zenn.dev${article.path} | ${cdateJST(article.published_at).format("YYYY-MM-DD")
-                }\n`;
-        });
-        message += m;
+    if (userArticles.length === 0) {
+        return "先月のZennブログ投稿はありませんでした… :cry:";
+    }
+    return userArticles.reduce((message: string, userArticle, i) => {
+        message += userArticle.articles.reduce((m: string, article) => {
+            return m += `・ ${article.title} | https://zenn.dev${article.path} | ${cdateJST(article.published_at).format("YYYY-MM-DD")}\n`;
+        }, `${userArticle.userName} さんの先月のZennブログ投稿です\n`);
         if (userArticles.length - 1 !== i) {
             message += `\n`;
         }
-    });
-    if (message === "") {
-        `先月のZennブログ投稿はありませんでした… :cry:`;
-    }
-    return message;
+        return message;
+    }, "");
 }
 
 export const fetchZennArticleMessage = async (publicationName: string): Promise<string> => {
