@@ -1,5 +1,4 @@
 import { Post, WantedlyPost } from "./types/wantedly_post";
-import { ZennArticle, Article, User } from "./types/zenn_article";
 import { cdate } from "cdate";
 
 const cdateJST = cdate().tz("Asia/Tokyo").cdateFn();
