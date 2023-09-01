@@ -14,13 +14,17 @@ export default {
 		ctx.waitUntil(
 			app.client.chat.postMessage({
 				channel: env.POST_CHANNEL_ID,
-				text: await fetchZennArticleMessage(env.PUBLICATION_NAME)
+				text: await fetchZennArticleMessage(env.PUBLICATION_NAME),
+				unfurl_links: false,
+				unfurl_media: false,
 			})
 		);
 		ctx.waitUntil(
 			app.client.chat.postMessage({
 				channel: env.POST_CHANNEL_ID,
-				text: await fetchWantedlyPostMessage(env.COMPANY_ID)
+				text: await fetchWantedlyPostMessage(env.COMPANY_ID),
+				unfurl_links: false,
+				unfurl_media: false,
 			})
 		);
 	}
