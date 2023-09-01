@@ -19,7 +19,7 @@ const makeMessage = (posts: Post[]): string => {
         return "先月のWantedlyブログ投稿はありませんでした… :cry:";
     }
     return posts.reduce((message: string, post) => {
-        return message += `・ ${post.title} | https://www.wantedly.com${post.post_path} | ${cdateJST(post.published_at).format("YYYY-MM-DD")}\n`;
+        return message += `• ${cdateJST(post.published_at).format("YYYY-MM-DD")} | <https://www.wantedly.com${post.post_path}|${post.title}>\n`;
     }, "先月のWantedlyブログ投稿です\n");
 }
 

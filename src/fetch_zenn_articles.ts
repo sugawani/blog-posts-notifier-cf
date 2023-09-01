@@ -54,7 +54,7 @@ function makeMessage(userArticles: UserArticles[]): string {
     }
     return userArticles.reduce((message: string, userArticle, i) => {
         message += userArticle.articles.reduce((m: string, article) => {
-            return m += `・ ${article.title} | https://zenn.dev${article.path} | ${cdateJST(article.published_at).format("YYYY-MM-DD")}\n`;
+            return m += `• ${cdateJST(article.published_at).format("YYYY-MM-DD")} | <https://zenn.dev${article.path}|${article.title}>\n`;
         }, `${userArticle.userName} さんの先月のZennブログ投稿です 投稿数: ${userArticle.articles.length}件\n`);
         if (userArticles.length - 1 !== i) {
             message += `\n`;
