@@ -6,4 +6,4 @@ compatibility_date = "2023-05-15"
 # Docs: https://developers.cloudflare.com/workers/platform/triggers/cron-triggers/
 # Configuration: https://developers.cloudflare.com/workers/wrangler/configuration/#triggers
 [triggers]
-crons = ["0 10 1 * *"] # 毎月月初
+crons = ["0 1 1 * *"] # 毎月月初10時(USTなので-9時間)
