@@ -6,6 +6,7 @@ export interface Env extends SlackEdgeAppEnv {
 	POST_CHANNEL_ID: string;
 	PUBLICATION_NAME: string;
 	COMPANY_ID: string;
+	DB: D1Database;
 }
 
 export default {
@@ -14,7 +15,7 @@ export default {
 		ctx.waitUntil(
 			app.client.chat.postMessage({
 				channel: env.POST_CHANNEL_ID,
-				text: await fetchZennArticleMessage(env.PUBLICATION_NAME),
+				text: await fetchZennArticleMessage(env.PUBLICATION_NAME, env.DB),
 				unfurl_links: false,
 				unfurl_media: false,
 			})
@@ -27,5 +28,5 @@ export default {
 				unfurl_media: false,
 			})
 		);
-	}
+	},
 };

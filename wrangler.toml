@@ -2,8 +2,10 @@ name = "blog-posts-notifier-cf"
 main = "src/worker.ts"
 compatibility_date = "2023-05-15"
 
-# Cron Triggers
-# Docs: https://developers.cloudflare.com/workers/platform/triggers/cron-triggers/
-# Configuration: https://developers.cloudflare.com/workers/wrangler/configuration/#triggers
 [triggers]
 crons = ["0 1 1 * *"] # 毎月月初10時(USTなので-9時間)
+
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "user_bindings"
+database_id = "2c1555b2-57dd-4097-aefc-628bbe5e27d1"

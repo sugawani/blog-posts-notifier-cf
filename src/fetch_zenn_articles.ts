@@ -9,6 +9,11 @@ interface UserArticles {
     articles: Article[];
 }
 
+interface UserBinding {
+    id: number;
+    name: string;
+}
+
 const extractLastMonthArticles = (articles: Article[]): Article[] => {
     const lastMonth = cdateJST().add(-1, "month");
     const firstDayOfLastMonth = lastMonth.startOf("month");
@@ -20,7 +25,7 @@ const extractLastMonthArticles = (articles: Article[]): Article[] => {
     })
 }
 
-const reduceUserArticles = (articles: Article[]): UserArticles[] => {
+const reduceUserArticles = (articles: Article[], userBindings: UserBinding[]): UserArticles[] => {
     return articles.reduce(
         (acc: UserArticles[], article) => {
             const foundUser = acc.find((user) => user.userID === article.user.id);
@@ -30,9 +35,10 @@ const reduceUserArticles = (articles: Article[]): UserArticles[] => {
                     a.published_at > b.published_at ? 1 : -1
                 );
             } else {
+                const userName = userBindings.find(ub => ub.id === article.user.id)?.name ?? article.user.name
                 acc.push({
                     userID: article.user.id,
-                    userName: article.user.name,
+                    userName: userName,
                     articles: [article],
                 });
             }
@@ -57,7 +63,17 @@ function makeMessage(userArticles: UserArticles[]): string {
     }, "");
 }
 
-export const fetchZennArticleMessage = async (publicationName: string): Promise<string> => {
+const fetchUserBindings = async (DB: D1Database): Promise<UserBinding[]> => {
+    const { results } = await DB.prepare("SELECT * FROM user_bindings").all();
+    return results.map((result) => {
+        return {
+            id: result.id,
+            name: result.name,
+        } as UserBinding;
+    });
+}
+
+export const fetchZennArticleMessage = async (publicationName: string, DB: D1Database): Promise<string> => {
     const url = `https://zenn.dev/api/articles?publication_name=${publicationName}&count=20&order=latest`;
     const response = await fetch(url);
     if (!response.ok) {
@@ -65,6 +81,7 @@ export const fetchZennArticleMessage = async (publicationName: string): Promise<
     }
     const data: ZennArticle = await response.json();
     const lastMonthArticles = extractLastMonthArticles(data.articles);
-    const userArticles = reduceUserArticles(lastMonthArticles);
+    const userBindings = await fetchUserBindings(DB);
+    const userArticles = reduceUserArticles(lastMonthArticles, userBindings);
     return makeMessage(userArticles);
 }
